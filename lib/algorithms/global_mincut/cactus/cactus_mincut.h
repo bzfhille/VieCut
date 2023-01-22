@@ -179,6 +179,23 @@ class cactus_mincut : public minimum_cut {
             mb_edges = mbmc.findCutFromCactus(out_graph, mincut, graphs[0]);
         }
 
+	// Print contained vertices to stdout.
+	auto nodes = out_graph->nodes();
+
+	for (auto node_it = nodes.begin(); node_it != nodes.end(); ++node_it) {
+	  std::cout << *node_it << ": ";
+
+	  auto vertices = out_graph->containedVertices(*node_it); // needed as containedVertices() creates copy, not reference
+
+	  for (auto vertex_it = vertices.begin(); vertex_it != vertices.end(); ) {
+            std::cout << *vertex_it;
+	    if (++vertex_it != vertices.end())
+	      std::cout << ",";
+	  }
+
+	  std::cout << "\n";
+	}
+
         return std::make_tuple(mincut, out_graph, mb_edges);
     }
 };
